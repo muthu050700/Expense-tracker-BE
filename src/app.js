@@ -50,7 +50,7 @@ app.get("/getAllExpense", async (req, res) => {
 
         res.send({
             message: "Success",
-            monthWiseData
+            data: monthWiseData
         })
     } catch (err) {
         res.status(400).send("Error: " + err.message)
