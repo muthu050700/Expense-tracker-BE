@@ -1,6 +1,6 @@
 const express = require("express");
 const connectDb = require("./config/database");
-const Transaction = require("./model/transaction.jsx");
+const Transaction = require("./model/transaction.js");
 const { userExpenseValidation } = require("./utils/validation.js");
 const cors = require("cors")
 
@@ -35,10 +35,22 @@ app.post("/user/expense", async (req, res) => {
 app.get("/getAllExpense", async (req, res) => {
     try {
         const data = await Transaction.find({});
+        const { month, year } = req.query;
+        const monthNum = parseInt(month);
+        const yearNum = parseInt(year);
+        const startDate = new Date(yearNum, monthNum - 1, 1);
+        const endDate = new Date(yearNum, monthNum, 1);
+
+        const monthWiseData = await Transaction.find({
+            createdAt: {
+                $gte: startDate,
+                $lt: endDate
+            }
+        })
 
         res.send({
             message: "Success",
-            data
+            monthWiseData
         })
     } catch (err) {
         res.status(400).send("Error: " + err.message)
