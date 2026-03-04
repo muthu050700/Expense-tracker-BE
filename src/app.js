@@ -34,7 +34,6 @@ app.post("/user/expense", async (req, res) => {
 
 app.get("/getAllExpense", async (req, res) => {
     try {
-        const data = await Transaction.find({});
         const { month, year } = req.query;
         const monthNum = parseInt(month);
         const yearNum = parseInt(year);
